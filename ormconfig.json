@@ -1,0 +1,8 @@
+{
+    "type": "sqljs",
+    "host": "localhost",
+    "location": "db",
+    "database": "chat",
+    "entities": ["src/**/*.entity.ts"],
+    "synchronize": true
+  }
