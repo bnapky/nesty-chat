@@ -14,8 +14,8 @@ export class UserServiceMock {
 
         return Promise.resolve(user);
     }
+    
+    compareHash = (password: string, hash: string): boolean => password.split('').reverse().join('') == hash
 
-    compareHash = (password: string, hash: string): boolean => password.split('').reverse().join() == hash
-
-    private hash = (password: string): string => password.split('').reverse().join()
+    private hash = (password: string): string => password.split('').reverse().join('')
 }

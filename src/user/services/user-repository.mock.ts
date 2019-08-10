@@ -1,5 +1,5 @@
 const users = [
-    { username: 'napky', password: 'Password123!' },
+    { username: 'napky', password: '!321drowssaP' },
 ];
 
 export const userRepositoryMock = jest.fn(() => ({
