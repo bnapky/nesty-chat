@@ -21,7 +21,7 @@ export class UserService extends TypeOrmCrudService<User> {
         return user;
     }
 
-    compareHash = (password: string, hash: string): string => bcrypt.compare(password, hash)
+    compareHash = (password: string, hash: string): boolean => bcrypt.compare(password, hash)
 
     private hash = (password: string): string => bcrypt.hash(password, SALT_ROUNDS)
 }
