@@ -8,6 +8,9 @@ import { UserService } from '../services/user.service';
     model: {
         type: User,
     },
+    query: {
+        exclude: ['password']
+    }
 })
 @Controller('users')
 export class UserController {

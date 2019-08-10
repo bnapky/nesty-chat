@@ -1,0 +1,1 @@
+export const passwordErrorMessage = `The password must contain at least 1 lowercase alphabetical character, 1 uppercase alphabetical character, 1 numeric character, and  must be eight characters or longer.`;
