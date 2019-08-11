@@ -17,7 +17,7 @@ export class AuthService {
   ) { }
 
   async validateUser(username: string, password: string): Promise<User> {
-    const user = await this.userService.findOne({ where: { username }, select: ['password'] });
+    const user = await this.userService.findOne({ where: { username }, select: ['password', 'username', 'id'] });
 
     if (user && await this.userService.compareHash(password, user.password))
       return user;
@@ -29,7 +29,7 @@ export class AuthService {
     const payload: JwtPayload = { username: user.username, sub: user.id };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload), user: { username: user.username, id: user.id }
     };
   }
 

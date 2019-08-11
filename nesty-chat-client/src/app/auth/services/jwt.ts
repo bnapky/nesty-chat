@@ -1,4 +1,4 @@
-import { IUser } from "src/user/entities/user";
+import { IUser } from './user';
 
 export interface JwtToken {
     access_token: string;
