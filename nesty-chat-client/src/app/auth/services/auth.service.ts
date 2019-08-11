@@ -9,12 +9,20 @@ import { JwtToken } from './jwt';
 })
 export class AuthService {
 
-
   public $session: BehaviorSubject<JwtToken>;
+
+  //This should be hidden away in a config file :)
   readonly API_URL = 'http://localhost:3000/';
 
   constructor(private http: HttpClient) {
     this.retrieveSessionFromLocalStorage();
+  }
+
+  getAuthorizationToken(): string {
+    if (!this.$session.value)
+      return null;
+
+    return `Bearer ${this.$session.value.access_token}`;
   }
 
   logout() {
