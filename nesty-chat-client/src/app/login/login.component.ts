@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   currentUser: IUser;
   user: IUser = { username: '', password: '' };
   isLoggedIn = false;
+  snackBarDuration = 5000;
 
   constructor(private authService: AuthService, private _snackBar: MatSnackBar) { }
 
@@ -31,9 +32,9 @@ export class LoginComponent implements OnInit {
   submit(action: (user: IUser) => Observable<JwtToken>, message?: string, error?: string) {
     action(this.user)
       .toPromise()
-      .then(() => this._snackBar.open(message, null, { duration: 5000 }))
+      .then(() => this._snackBar.open(message, null, { duration: this.snackBarDuration }))
       .catch((response: HttpErrorResponse) => {
-        this._snackBar.open(error || response.error.message, null, { duration: 5000 });
+        this._snackBar.open(error || response.error.message, null, { duration: this.snackBarDuration });
       });
   }
 

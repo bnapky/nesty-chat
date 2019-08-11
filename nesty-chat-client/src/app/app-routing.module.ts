@@ -1,16 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ChatModule } from './chat/chat.module';
-import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/components/home/home.component';
 
 const routes: Routes = [
   {
-    path: 'chat',
-    loadChildren: () => ChatModule
-  },
-  {
     path: '',
-    component: LoginComponent
+    component: HomeComponent
   },
 ];
 
