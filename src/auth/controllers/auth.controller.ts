@@ -4,8 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../../user/services/user.service';
 import { PASSWORD_ERROR_MESSAGE } from '../constants';
-import { User } from 'src/user/entities/user.entity';
-import { JwtToken } from '../strategies/jwt-token';
+import { UserSession } from '../strategies/user-session';
 
 @Controller('auth')
 export class AuthController {
@@ -14,12 +13,12 @@ export class AuthController {
 
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    async login(@Request() req): Promise<JwtToken> {
+    async login(@Request() req): Promise<UserSession> {
         return this.authService.login(req.user);
     }
 
     @Post('register')
-    async register(@Request() req): Promise<JwtToken> {
+    async register(@Request() req): Promise<UserSession> {
 
         const { username, password } = req.body;
         const user = await this.userService.findOne({ where: { username } });

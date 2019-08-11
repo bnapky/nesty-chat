@@ -3,8 +3,7 @@ import { AuthService } from '../auth/services/auth.service';
 import { IUser } from '../auth/services/user';
 import { MatSnackBar } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
-import { JwtToken } from '../auth/services/jwt';
-import { Observable } from 'rxjs';
+import { UserSession } from '../auth/services/user-session';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.authService.$session.subscribe((session: JwtToken) => {
+    this.authService.$session.subscribe((session: UserSession) => {
       this.isLoggedIn = Boolean(session);
 
       if (session)
@@ -29,9 +28,8 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  submit(action: (user: IUser) => Observable<JwtToken>, message?: string, error?: string) {
+  submit(action: (user: IUser) => Promise<UserSession>, message?: string, error?: string) {
     action(this.user)
-      .toPromise()
       .then(() => this._snackBar.open(message, null, { duration: this.snackBarDuration }))
       .catch((response: HttpErrorResponse) => {
         this._snackBar.open(error || response.error.message, null, { duration: this.snackBarDuration });

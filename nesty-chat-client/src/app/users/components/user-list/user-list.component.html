@@ -1,9 +1,13 @@
-
-<section class="user-list-wrapper">
-    <mat-card class="p-4 d-inline-block ">
-      <mat-card-header *>
-        <mat-card-title> Registered Users: </mat-card-title>
-      </mat-card-header>
-      <mat-divider></mat-divider>
-    </mat-card>
-  </section>
+<section class="pt-6 user-list">
+  <mat-card class="p-4 d-inline-block">
+    <mat-card-header>
+      <mat-card-title>Online Users </mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <div class="mt-2">
+      <mat-chip-list aria-label="Fish selection">
+        <mat-chip *ngFor="let user of users" [ngClass]="{'active': user.online}">{{user.username}}</mat-chip>
+      </mat-chip-list>
+    </div>
+  </mat-card>
+</section>

@@ -13,10 +13,10 @@ export class LobbyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chatService.getMessage().subscribe(x => console.log(x));
+
   }
 
   onSendMessageClick(): void {
-    this.chatService.sendMessage(this.message);
+
   }
 }

@@ -1,0 +1,10 @@
+mat-card {
+  width: 30rem;
+}
+
+mat-chip {
+  &.active {
+    background-color: #7cb342;
+    color: white;
+  }
+}

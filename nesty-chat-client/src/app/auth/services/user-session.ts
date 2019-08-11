@@ -1,6 +1,6 @@
 import { IUser } from './user';
 
-export interface JwtToken {
+export interface UserSession {
     access_token: string;
     user: IUser
 };

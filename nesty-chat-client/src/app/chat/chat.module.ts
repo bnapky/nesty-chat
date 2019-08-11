@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { FormsModule } from '@angular/forms';
 
 import { ChatRoutingModule } from './chat-routing.module';
 import { LobbyComponent } from './lobby/lobby.component';
 import { ChatService } from './services/chat.service';
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: { query: { token: 'test' } } };
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [LobbyComponent],
   providers: [ChatService],
   imports: [
+    AuthModule,
     FormsModule,
     CommonModule,
     ChatRoutingModule,
-    SocketIoModule.forRoot(config),
   ]
 })
 export class ChatModule { }
