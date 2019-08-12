@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../services/chat.service';
+import { MessagePayload } from '../../../../../src/chat/message-payload';
 
 @Component({
   selector: 'app-lobby',
@@ -7,16 +8,25 @@ import { ChatService } from '../services/chat.service';
   styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
-  message = '';
+  text = '';
+
+  messages: MessagePayload[] = [];
 
   constructor(private chatService: ChatService) {
+    this.chatService.$messages.subscribe((messages:MessagePayload[]) => {
+      console.log('hello?', messages);
+      this.messages = messages;
+    });
+
+    this.chatService.getMessageList();
   }
 
   ngOnInit(): void {
 
   }
 
-  onSendMessageClick(): void {
-
+  sendMessage(): void {
+    this.chatService.sendMessage(this.text);
+    this.text = '';
   }
 }

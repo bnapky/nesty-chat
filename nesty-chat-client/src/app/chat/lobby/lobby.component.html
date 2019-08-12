@@ -1,7 +1,20 @@
-<div>
-  <h2>Welcome to lobby</h2>
-  <form>
-    <input type="text" [(ngModel)]="message" name="message">
-    <button (click)="onSendMessageClick()">Send Message</button>
-  </form>
-</div>
+<section class="mt-4 lobby">
+  <mat-card class="p-4 d-inline-block">
+    <mat-card-header>
+      <mat-card-title>Lobby </mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <form class="w-100 mt-2 mb-2">
+      <div>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Write your message" [(ngModel)]="text" name="text">
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" class="mt-2 w-100" (click)="sendMessage()"> Send </button>
+    </form>
+
+    <div class="message-list">
+      <app-message *ngFor="let message of messages" [message]="message"> </app-message>
+    </div>
+  </mat-card>
+</section>

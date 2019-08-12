@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ChatGateway } from './chat.gateway';
 import { JwtModule } from '@nestjs/jwt';
+
+import { ChatGateway } from './chat.gateway';
 import { JWT } from '../auth/constants';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [

@@ -1,16 +1,20 @@
 import { SubscribeMessage, WebSocketGateway, WsResponse, OnGatewayConnection, WebSocketServer, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { DecodedJwt } from 'src/auth/strategies/decoded-jwt';
+
+import { DecodedJwt } from '../auth/strategies/decoded-jwt';
 import { OnlineUser } from './online-user';
 import { COMMANDS } from './constants';
 import { UserService } from '../user/services/user.service';
+import { MessagePayload } from './message-payload';
 
 @WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
   users: OnlineUser[] = [];
+  messages: MessagePayload[][] = [[], [], []];
+  limit = 50;
 
   constructor(private jwtService: JwtService, private userService: UserService) { }
 
@@ -31,9 +35,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.removeUser(client);
   }
 
-  @SubscribeMessage('message')
-  handleMessage(client: Socket, payload: any): WsResponse<string> {
-    return { event: 'message', data: payload };
+  @SubscribeMessage(COMMANDS.MESSAGE)
+  handleMessage(client: Socket, payload: string): void {
+    this.broadcastMessage(client, payload);
+  }
+
+  @SubscribeMessage(COMMANDS.MESSAGE_LIST)
+  handleMessageList(client: Socket, payload: any): void {
+    const room = 0;
+    if (this.messages[room].length > 0)
+      this.server.emit(COMMANDS.MESSAGE_LIST, JSON.stringify(this.messages[room]));
   }
 
   @SubscribeMessage(COMMANDS.ONLINE_USERS)
@@ -53,6 +64,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private async broadcastOnlineUsers() {
     const users = await this.getOnlineUsers();
     this.server.emit(COMMANDS.ONLINE_USERS, JSON.stringify(users));
+  }
+
+  broadcastMessage(client: Socket, payload: string) {
+    const room = 0;
+    this.messages[room] = [JSON.parse(payload), ...this.messages[room]];
+
+    if (this.messages[room].length > this.limit)
+      this.messages[room] = this.messages[room].slice(0, this.limit);
+
+    this.server.emit(COMMANDS.MESSAGE, payload);
   }
 
   private async getOnlineUsers(): Promise<OnlineUser[]> {

@@ -1,2 +1,7 @@
-<app-login ></app-login>
-<app-user-list *ngIf="isLoggedIn"></app-user-list>
+<div class="d-inline-block mr-4">
+  <app-login ></app-login>
+  <app-user-list *ngIf="isLoggedIn"></app-user-list>
+</div>
+<div class="d-inline-block">
+  <app-lobby *ngIf="isLoggedIn"></app-lobby>
+</div>
