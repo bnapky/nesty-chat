@@ -28,13 +28,11 @@ export class StockyService {
                 }
 
                 channel = ch;
-
                 ch.assertQueue(service.queue, { durable: false });
                 ch.assertQueue(service.commandQueue, { durable: false });
 
                 ch.consume(service.queue, (msg) => {
                     const { quote, room, code } = JSON.parse(msg.content.toString());
-
                     const text = quote == 'N/D' ? `Invalid stock quote: ${code}.` : `${code} quote is $${quote} per share`;
                     const messagePayload: MessagePayload = {
                         text,
@@ -42,11 +40,8 @@ export class StockyService {
                         user: { userId: -1, username: 'stocky-bot' }
                     }
 
-                    gateway.broadcastMessage(null, JSON.stringify(messagePayload));
-
+                    gateway.broadcastMessage(room, JSON.stringify(messagePayload));
                 }, { noAck: true });
-
-
             });
         });
     }

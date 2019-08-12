@@ -32,6 +32,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const decoded: DecodedJwt = await this.jwtService.verifyAsync(client.handshake.query.token);
       this.users.push({ userId: decoded.sub, username: decoded.username, client });
       this.broadcastOnlineUsers();
+      client.join('0');
     } catch (e) {
       client.disconnect();
     }
@@ -54,14 +55,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
-    this.broadcastMessage(client, payload);
+    const room = this.getClientRoom(client);
+    this.broadcastMessage(+room, payload);
   }
 
   @SubscribeMessage(ACTIONS.MESSAGE_LIST)
   handleMessageList(client: Socket, payload: any): void {
-    const room = 0;
-    if (this.messages[room].length > 0)
-      this.server.emit(ACTIONS.MESSAGE_LIST, JSON.stringify(this.messages[room]));
+    const room = +this.getClientRoom(client);
+    client.emit(ACTIONS.MESSAGE_LIST, JSON.stringify(this.messages[room]));
   }
 
   @SubscribeMessage(ACTIONS.ONLINE_USERS)
@@ -70,9 +71,23 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.send(ACTIONS.ONLINE_USERS, JSON.stringify(users));
   }
 
+  @SubscribeMessage(ACTIONS.ROOM)
+  async handleJoinRoom(client: Socket, payload: string): Promise<void> {
+    const messagePayload: MessagePayload = JSON.parse(payload);
+    const room = this.getClientRoom(client);
+
+    if (room == messagePayload.text)
+      return;
+
+    client.leaveAll();
+    client.join(messagePayload.text + '');
+  }
+
   onModuleInit() {
     this.stockyService = this.moduleRef.get(StockyService);
   }
+
+  private getClientRoom = (client: Socket): string => Object.keys(client.rooms).find(k => k !== client.id);
 
   private async removeUser(client: Socket) {
     try {
@@ -87,14 +102,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.emit(ACTIONS.ONLINE_USERS, JSON.stringify(users));
   }
 
-  broadcastMessage(client: Socket, payload: string) {
-    const room = 0;
+  broadcastMessage(room: number, payload: string) {
     this.messages[room] = [JSON.parse(payload), ...this.messages[room]];
 
     if (this.messages[room].length > this.limit)
-      this.messages[room] = this.messages[room].slice(0, this.limit);
+      this.messages[room] = this.messages[room].slice(0, this.limit)
 
-    this.server.emit(ACTIONS.MESSAGE, payload);
+    this.server.to(room + '').emit(ACTIONS.MESSAGE, payload);
   }
 
   private async getOnlineUsers(): Promise<OnlineUser[]> {
@@ -104,9 +118,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private handleCommand(client: Socket, command: string) {
     const [base, argument] = command.split('=');
+    const room = this.getClientRoom(client);
 
     if (base in this.commands) {
-      this.commands[base](argument, { room: 0 });
+      this.commands[base](argument, { room });
     }
   }
 }

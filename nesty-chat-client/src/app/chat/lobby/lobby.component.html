@@ -1,7 +1,13 @@
 <section class="mt-4 lobby">
   <mat-card class="p-4 d-inline-block">
-    <mat-card-header>
-      <mat-card-title>Lobby </mat-card-title>
+    <mat-card-header >
+      <div class="d-inline-block">
+        <mat-chip-list class="rooms">
+          <mat-chip class="room" [ngClass]="{'active': room == 0}" (click)="setRoom(0)">Room 0</mat-chip>
+          <mat-chip class="room" [ngClass]="{'active': room == 1}" (click)="setRoom(1)">Room 1</mat-chip>
+          <mat-chip class="room" [ngClass]="{'active': room == 2}" (click)="setRoom(2)">Room 2</mat-chip>
+        </mat-chip-list>
+      </div>
     </mat-card-header>
     <mat-divider></mat-divider>
     <form class="w-100 mt-2 mb-2">

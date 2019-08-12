@@ -8,3 +8,23 @@ mat-card {
   overflow-y: scroll;
   text-align: left;
 }
+
+.room {
+  position: relative;
+  bottom: 5px;
+
+  &.active {
+    color: white !important;
+    background-color: #29b6f6 !important;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.rooms {
+  position: relative;
+  bottom: 10px;
+  left: -35px;
+}

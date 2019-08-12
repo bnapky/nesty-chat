@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { MessagePayload } from '../../../../../src/chat/message-payload';
 
@@ -7,25 +7,30 @@ import { MessagePayload } from '../../../../../src/chat/message-payload';
   templateUrl: './lobby.component.html',
   styleUrls: ['./lobby.component.scss']
 })
-export class LobbyComponent implements OnInit {
+export class LobbyComponent {
   text = '';
 
   messages: MessagePayload[] = [];
+  room = 0;
 
   constructor(private chatService: ChatService) {
-    this.chatService.$messages.subscribe((messages:MessagePayload[]) => {
+    this.chatService.$messages.subscribe((messages: MessagePayload[]) => {
       this.messages = messages;
     });
 
     this.chatService.getMessageList();
   }
 
-  ngOnInit(): void {
-
-  }
-
   sendMessage(): void {
     this.chatService.sendMessage(this.text);
     this.text = '';
+  }
+
+  setRoom(index: string): void {
+    if (this.room == +index)
+      return;
+
+    this.room = +index;
+    this.chatService.joinRoom(index);
   }
 }

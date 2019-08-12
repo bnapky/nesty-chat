@@ -39,12 +39,26 @@ describe('ChatGateway', () => {
 
   it('should broadcast online users when adding a connection', async () => {
     (gateway as any).broadcastOnlineUsers = jest.fn(x => x);
-
-    await gateway.handleConnection({
-      handshake: { query: { token: '1233' } }
-    } as Socket);
+    const client = {
+      handshake: { query: { token: '1233' } },
+    } as Socket;
+    
+    client.join = jest.fn();
+    await gateway.handleConnection(client);
 
     expect((gateway as any).broadcastOnlineUsers.mock.calls.length).toBe(1);
+  });
+
+  it('client should join a room on connecting', async () => {
+    (gateway as any).broadcastOnlineUsers = jest.fn(x => x);
+    const client = {
+      handshake: { query: { token: '1233' } },
+    } as Socket;
+    
+    client.join = jest.fn();
+    await gateway.handleConnection(client);
+
+    expect((client.join as any).mock.calls.length).toBe(1);
   });
 
   it('should broadcast online users when removing a connection', async () => {

@@ -11,7 +11,6 @@ import { MessagePayload } from '../../../../../src/chat/message-payload';
 
 @Injectable()
 export class ChatService {
-
   session: UserSession = null;
   socket: Socket;
   $users = new BehaviorSubject<IUser[]>([]);
@@ -50,6 +49,18 @@ export class ChatService {
     });
   }
 
+  joinRoom(index: string) {
+    if (!(this.socket && this.session))
+      return;
+
+    const payload: MessagePayload = {
+      text: index + '', timestamp: new Date(), user: { username: this.session.user.username, userId: this.session.user.id }
+    };
+
+    this.socket.emit(ACTIONS.ROOM, JSON.stringify(payload));
+    this.getMessageList();
+  }
+
   sendMessage(text: string) {
     if (!(this.socket && this.session))
       return;
@@ -79,6 +90,7 @@ export class ChatService {
     if (!this.socket)
       return;
 
+    this.$messages.next([]);
     this.socket.disconnect();
   }
 }
