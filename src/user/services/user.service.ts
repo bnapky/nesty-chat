@@ -16,6 +16,8 @@ export class UserService extends TypeOrmCrudService<User> {
         const user = this.repo.create({ username, password });
         user.password = await this.hash(password);
 
+        //for showcasing purposes only: users are logged to console to show encrypted passwords
+        console.log(user);
         await this.repo.insert(user);
 
         return user;
