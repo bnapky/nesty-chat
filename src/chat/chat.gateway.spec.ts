@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
+import { Socket } from 'socket.io';
+import { StockyService } from './stocky/stocky.service';
 import { ChatGateway } from './chat.gateway';
 import { UserService } from '../user/services//user.service';
 import { UserServiceMock } from '../user/services/user.mock.service';
 import { JwtServiceMock } from '../auth/services/jwt.mock.service';
-import { Socket } from 'socket.io';
 
 describe('ChatGateway', () => {
   let gateway: ChatGateway;
@@ -12,8 +13,10 @@ describe('ChatGateway', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        
         { provide: JwtService, useClass: JwtServiceMock },
         { provide: UserService, useClass: UserServiceMock },
+        { provide: StockyService, useClass: jest.fn() },
         ChatGateway
       ],
     }).compile();

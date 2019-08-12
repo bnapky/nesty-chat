@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Socket } from 'socket.io';
 import { BehaviorSubject } from 'rxjs';
-import { COMMANDS } from '../../../../../src/chat/constants';
+import { ACTIONS } from '../../../../../src/chat/constants';
 import { IUser } from '../../auth/services/user';
 import { UserSession } from '../../auth/services/user-session';
 import { AuthService } from '../../auth/services/auth.service';
@@ -26,8 +26,8 @@ export class ChatService {
         return this.disconnect();
 
       this.socket = io('http://localhost:3000', { query: { token: `${session.access_token}` } });
-      this.socket.on(COMMANDS.ONLINE_USERS, (users) => this.$users.next(JSON.parse(users)));
-      this.socket.on(COMMANDS.MESSAGE_LIST, (data) => {
+      this.socket.on(ACTIONS.ONLINE_USERS, (users) => this.$users.next(JSON.parse(users)));
+      this.socket.on(ACTIONS.MESSAGE_LIST, (data) => {
         let messages: MessagePayload[] = JSON.parse(data);
 
         if (messages.length > this.messageListLimit)
@@ -37,7 +37,7 @@ export class ChatService {
       }
       );
 
-      this.socket.on(COMMANDS.MESSAGE, (data: string) => {
+      this.socket.on(ACTIONS.MESSAGE, (data: string) => {
         let messages: MessagePayload[] = [JSON.parse(data), ...this.$messages.value];
 
         if (messages.length > this.messageListLimit)
@@ -58,21 +58,21 @@ export class ChatService {
       text, timestamp: new Date(), user: { username: this.session.user.username, userId: this.session.user.id }
     };
 
-    this.socket.emit(COMMANDS.MESSAGE, JSON.stringify(payload));
+    this.socket.emit(ACTIONS.MESSAGE, JSON.stringify(payload));
   }
 
   getMessageList() {
     if (!(this.socket && this.session))
       return;
 
-    this.socket.emit(COMMANDS.MESSAGE_LIST);
+    this.socket.emit(ACTIONS.MESSAGE_LIST);
   }
 
   getOnlineUsers() {
     if (!this.socket)
       return;
 
-    this.socket.emit(COMMANDS.ONLINE_USERS);
+    this.socket.emit(ACTIONS.ONLINE_USERS);
   }
 
   disconnect(): void {

@@ -14,7 +14,6 @@ export class LobbyComponent implements OnInit {
 
   constructor(private chatService: ChatService) {
     this.chatService.$messages.subscribe((messages:MessagePayload[]) => {
-      console.log('hello?', messages);
       this.messages = messages;
     });
 

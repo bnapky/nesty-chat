@@ -29,6 +29,8 @@
     "@nestjs/websockets": "6.5.3",
     "@nestjsx/crud": "4.2.0",
     "@nestjsx/crud-typeorm": "4.2.0",
+    "@types/amqplib": "0.5.13",
+    "amqplib": "0.5.5",
     "bcrypt": "3.0.6",
     "class-transformer": "0.2.3",
     "class-validator": "0.9.1",
