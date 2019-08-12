@@ -13,12 +13,17 @@ Realtime chat with support for multiple lobbies and a bot that receives commands
 ### Clone:
   ``` git clone https://github.com/bnapky/nesty-chat.git ```
 
+### Requirements:
+  * Node version > 9
+  * RabbitMQ server running on default ports.
+
 #### Run backend:
   1. cd nesty-chat
   2. npm i 
   3. npm start 
 
 #### Run stocky-bot:
+  0. Install and setup RabbitMQ server.
   1. cd stocky-bot 
   2. npm i 
   3. node main.js 
