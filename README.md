@@ -1,6 +1,7 @@
 # Nesty Chat!
 
-Realtime chat with support for multiple lobbies and a bot that receives commands to query stock quotes. (/stock=aapl.us).
+Realtime chat with support for multiple lobbies and a bot that receives commands to query stock quotes. 
+eg: /stock=aapl.us
 
 ## Tech-stack: 
   * NestJs  
