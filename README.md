@@ -34,7 +34,7 @@ Realtime chat with support for multiple lobbies and a bot that receives commands
 
 * Jwt Authentication on rest API endpoints and web socket connections.
 * Local strategy to login and register.
-* User encrypted password
+* User encrypted password and strength validation
 * Multiple Lobbies
 * Angular(8) Material Front-end quickly put together that looks horrible :D
 * In-memory database for a development environment.
@@ -50,6 +50,10 @@ Realtime chat with support for multiple lobbies and a bot that receives commands
 * Example mocking of services and repositories 
   * UserMockService
   * AuthMockService
+
+### Query stock quotes with a command
+Login and input command /stock={stock_code} to query stock quotes from https://stooq.com
+eg: /stock=aapl.us
 
 ### Stay in touch
 
