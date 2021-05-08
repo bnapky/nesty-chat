@@ -42,7 +42,7 @@
     "rxjs": "^6.3.3",
     "socket.io": "2.2.0",
     "sql.js": "1.0.0",
-    "typeorm": "0.2.18",
+    "typeorm": "0.2.25",
     "typescript": "3.5.3"
   },
   "devDependencies": {
